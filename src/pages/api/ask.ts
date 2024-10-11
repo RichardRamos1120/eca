@@ -1,0 +1,93 @@
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { PromptTemplate } from '@langchain/core/prompts';
+import axios from 'axios';
+import { OpenAI } from '@langchain/openai';
+import { v4 as uuidv4 } from 'uuid';
+
+// Temporary in-memory storage for chat history (better to use a database or session store in production)
+const sessionStore: { [key: string]: string[] } = {};
+
+// Updated template to focus on equipment maintenance and care
+const TEMPLATE = `
+    Based on the provided context from the equipment guide, answer the user's question using the information in the context as much as possible. Make sure to sound like an expert firefighter and provide guidance on maintaining and caring for firefighting equipment.
+
+    If the answer isn’t fully covered in the guide, provide supportive and accurate information to answer the question. Use the context to strengthen your response.
+
+    Deliver a detailed and direct answer without repeating the user’s input or motivational phrases unless needed. If the question is repeated, offer additional specific details not covered in previous responses.
+
+    Avoid mentioning that the information is based on the guide.
+
+    ==============================
+    Equipment Guide Context: {context}
+    ==============================
+    Current conversation: {chat_history}
+
+    User: {question}
+    Assistant:
+`;
+
+//JSON URLs with equipment maintenance information
+const equipmentDataLinks = [
+    'https://eca-seven.vercel.app/docs/newdata.json',
+    
+];
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    const { question, sessionId } = req.body;
+
+    if (!question) {
+        return res.status(400).json({ error: 'Question is required' });
+    }
+
+    const session = sessionId || uuidv4(); // Generate a session ID if not provided
+    const chatHistory = sessionStore[session] || [];
+
+    try {
+        // Fetch and parse each JSON asynchronously
+        const dataPromises = equipmentDataLinks.map(async (link) => {
+            const response = await axios.get(link);
+            return response.data;
+        });
+
+        // Wait for all JSON data to be fetched
+        const equipmentData = await Promise.all(dataPromises);
+
+        // Combine all the JSON data into a single context string
+        const combinedContext = equipmentData.map(data => JSON.stringify(data)).join('\n');
+
+        // Limit the context size for GPT-4 token limits
+        const context = combinedContext.slice(0, 10000); // Adjust for GPT-4's token limits
+
+        // Set up OpenAI with GPT-4
+        const openai = new OpenAI({
+            model: 'gpt-3.5-turbo-instruct-0914', // Explicitly use gpt-3.5-turbo-instruct-0914 model
+            temperature: 0.5, 
+            openAIApiKey: process.env.OPENAI_API_KEY,
+        });
+
+        // Prepare the prompt with chat history
+        const promptTemplate = new PromptTemplate({
+            template: TEMPLATE,
+            inputVariables: ['context', 'chat_history', 'question'],
+        });
+
+        const prompt = await promptTemplate.format({
+            context,
+            chat_history: chatHistory.join('\n'), // Combine the conversation history
+            question,
+        });
+
+        // Generate answer using GPT-4
+        const response = await openai.call(prompt);
+        const answer = response.trim();
+
+        // Update chat history
+        chatHistory.push(`User: ${question}`, `Assistant: ${answer}`);
+        sessionStore[session] = chatHistory;
+
+        res.status(200).json({ answer, sessionId: session });
+    } catch (err) {
+        console.error(err); // Log the error for debugging
+        res.status(500).json({ error: 'Error processing the request' });
+    }
+}
