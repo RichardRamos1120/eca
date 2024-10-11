@@ -4,7 +4,7 @@ import axios from 'axios';
 import { OpenAI } from '@langchain/openai';
 import { v4 as uuidv4 } from 'uuid';
 
-// Temporary in-memory storage for chat history (better to use a database or session store in production)
+// Temporary in-memory storage for chat history
 const sessionStore: { [key: string]: string[] } = {};
 
 // Updated template to focus on equipment maintenance and care
@@ -17,6 +17,8 @@ const TEMPLATE = `
 
     Avoid mentioning that the information is based on the guide.
 
+    **Identify the most relevant image URL from the equipment data based on the user's question and answer.**
+
     ==============================
     Equipment Guide Context: {context}
     ==============================
@@ -26,10 +28,9 @@ const TEMPLATE = `
     Assistant:
 `;
 
-//JSON URLs with equipment maintenance information
+// JSON URLs with equipment maintenance information
 const equipmentDataLinks = [
-    'https://eca-seven.vercel.app/docs/newdata.json',
-    
+    'https://eca-swart.vercel.app/docs/newdata.json',
 ];
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -53,15 +54,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const equipmentData = await Promise.all(dataPromises);
 
         // Combine all the JSON data into a single context string
-        const combinedContext = equipmentData.map(data => JSON.stringify(data)).join('\n');
+        const combinedContext = equipmentData.map((data) => JSON.stringify(data)).join('\n');
 
         // Limit the context size for GPT-4 token limits
         const context = combinedContext.slice(0, 10000); // Adjust for GPT-4's token limits
 
         // Set up OpenAI with GPT-4
         const openai = new OpenAI({
-            model: 'gpt-3.5-turbo-instruct-0914', // Explicitly use gpt-3.5-turbo-instruct-0914 model
-            temperature: 0.5, 
+            model: 'gpt-3.5-turbo-instruct-0914',
+            temperature: 0.5,
             openAIApiKey: process.env.OPENAI_API_KEY,
         });
 
@@ -73,7 +74,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const prompt = await promptTemplate.format({
             context,
-            chat_history: chatHistory.join('\n'), // Combine the conversation history
+            chat_history: chatHistory.join('\n'),
             question,
         });
 
@@ -81,11 +82,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const response = await openai.call(prompt);
         const answer = response.trim();
 
+        // **Identify the most relevant image URL from the equipment data**
+        let imageUrl: string | null = null; // Initialize imageUrl to null
+
+        for (const equipment of equipmentData) {
+            const keywords: string[] = equipment.keywords || []; // Ensure keywords is an array of strings
+            if (keywords.some((keyword: string) => question.toLowerCase().includes(keyword.toLowerCase()))) {
+                imageUrl = equipment.imageUrl; // Assign image URL based on keyword match
+                break; // Stop searching after a match is found
+            }
+        }
+
         // Update chat history
         chatHistory.push(`User: ${question}`, `Assistant: ${answer}`);
         sessionStore[session] = chatHistory;
 
-        res.status(200).json({ answer, sessionId: session });
+        // Include imageUrl in the response
+        res.status(200).json({ answer, imageUrl, sessionId: session });
     } catch (err) {
         console.error(err); // Log the error for debugging
         res.status(500).json({ error: 'Error processing the request' });

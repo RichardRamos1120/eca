@@ -10,41 +10,44 @@ interface Message {
 // Define the equipment and their respective questions
 const equipmentQuestions = {
     "Helmet": [
-        "How do I inspect my helmet for damage?",
-        "What is the proper way to clean my helmet?",
-        "How often should I replace my helmet?"
+        "What are the features and functions of my helmet?",
+        "How do I properly don, doff, and adjust my helmet?",
+        "What are the limitations and purpose of my helmet?",
+        "How do I install replacement parts or make repairs to my helmet?",
+        "How do I store my helmet properly?",
+        "How can I minimize the risk of injury while using my helmet?"
     ],
     "Turnout Gear": [
-        "What are the best practices for maintaining my turnout gear?",
-        "How do I properly clean and store turnout gear?",
-        "When should I inspect my turnout gear for wear and tear?"
+        "What are the construction, features, and function of my garment?",
+        "What is the proper procedure for donning and doffing my MT94 ensemble?",
+        "How do I ensure proper overlap and fit of my turnout gear?",
+        "What are the limitations and purpose of my garment?",
+        "What is the correct method for reassembling my turnout gear?"
     ],
     "Boots": [
-        "How do I clean and maintain my fire-resistant boots?",
-        "What should I do if my boots get damaged?",
-        "How can I ensure my boots fit properly?"
+        "What are the limitations and purpose of my fire boots?",
+        "How can I minimize the risk of injury while using my fire boots?",
+        "What is the correct way to clean, decontaminate, and disinfect my fire boots?",
+        "How do I ensure proper size and fit of my fire boots?",
+        "What safety features should I be aware of for my fire boots?"
     ],
     "Gloves": [
-        "How do I inspect my gloves for damage?",
-        "What is the best way to clean my fire-resistant gloves?",
-        "When should I replace my gloves?"
+        "What are the limitations and purpose of structural gloves?",
+        "How do I properly wash, decontaminate, and store my gloves?",
+        "How can I ensure my structural gloves are being used safely?"
     ],
     "Hood": [
-        "How do I care for my flash hood?",
-        "What materials are best for flash hoods?",
-        "How can I check if my flash hood is still effective?"
+        "What are the limitations and purpose of my hood?",
+        "How do I wash, decontaminate, and store my hood?",
+        "How can I minimize the risk of injury while using my hood?"
     ],
-    "SCBA": [
-        "How often should I inspect my SCBA?",
-        "What are the maintenance steps for my SCBA?",
-        "How do I properly clean my SCBA?"
-    ],
-    "Firefighter Mask": [
-        "How do I clean and maintain my firefighter mask?",
-        "What should I do if my mask gets damaged?",
-        "How do I properly store my firefighter mask?"
+    "Pants": [
+        "What are the limitations and purpose of my pants?",
+        "How do I don and doff my pants properly?",
+        "What is the proper way to wash, decontaminate, and sanitize my pants?"
     ]
 };
+
 
 const Chat: React.FC = () => {
     const [selectedEquipment, setSelectedEquipment] = useState<string>(''); // State for selected equipment
@@ -174,16 +177,30 @@ const Chat: React.FC = () => {
 
     // Function to format long AI replies into separate paragraphs
     const formatText = (text: string) => {
-        if (typeof text !== 'string') {
-            return <p>Error: Invalid text format.</p>;
-        }
 
-        const sentences = text.split(/(?<!\b\w)\.(?=\s|$)/).filter((sentence) => sentence.trim() !== '');
 
-        return sentences.map((sentence, index) => (
-            <p key={index} className="mb-2">{sentence.trim()}.</p>
-        ));
+        // Regex to find sentences with image URLs
+        const parts = text.split(/(\/PPE Images\/.*?\.png)/g);
+        return parts.map((part, index) => {
+            // Check if the part matches the image URL pattern
+            if (/^\/PPE Images\/.*?\.png$/.test(part)) {
+                return (
+                    <Image
+                        key={index}
+                        src={part}
+                        alt="AI Response Image"
+                        layout="responsive" // Use responsive layout
+                        width={300} // Set the intrinsic width
+                        height={200} // Set the intrinsic height
+                        className="mt-2 max-w-[500px] w-full" // Center image and set max width
+                    />
+                );
+            } else {
+                return <p key={index} className="mb-2">{part.trim()}</p>;
+            }
+        });
     };
+
 
     const getQuestionsForSelectedEquipment = () => {
         if (selectedEquipment) {
@@ -241,7 +258,7 @@ const Chat: React.FC = () => {
 
             {isFirstVisit && (
                 <div className="bg-orange-100 p-2 mb-4 text-sm text-orange-800 border border-orange-300 rounded-md">
-                    Welcome! Ask me about firefighting equipment or maintenance. 
+                    Welcome! Ask me about firefighting equipment or maintenance.
                 </div>
             )}
 

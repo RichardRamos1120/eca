@@ -15,7 +15,7 @@
       "collar": "The neoprene collar provides a close fit around the neck. The front zip closure ends at the collar.",
       "additional_items": "Gloves and hood provided by the Israel Ministry of Defense should be donned according to their instructions."
     },
-    "image": ["/PPE Images/cbersnh-only/garment-construction-features-function-page-9-10.png"],
+    "images": ["/PPE Images/cbersnh-only/garment-construction-features-function-page-9-10.png"],
     "video": []
   },
   {
@@ -30,7 +30,7 @@
       "storage_conditions": "Store the garment in its bag in a shaded location away from direct and indirect sunlight and fluorescent light, with a constant temperature of approximately 70° F (21° C) and 40% relative humidity.\nEnsure that storage temperature or humidity varies no more than 10 degrees or 10 percent respectively. Avoid temperature extremes.",
       "shelf_life": "You can store a new garment or a garment that has been worn less than 24 hours, cleaned, thoroughly dried, and rebagged properly for up to 10 years from its manufacture date under the storage conditions described above. Inspect your stored garment at least once annually according to Section 6."
     },
-    "image": ["/PPE Images/cbersnh-only/Proper-Garment Storage-Page-26.png"],
+    "images": ["/PPE Images/cbersnh-only/Proper-Garment Storage-Page-26.png"],
     "video": []
   },
   {
@@ -58,7 +58,7 @@
         "preparation": "Remove contaminated and infected garment from wearer and from service before beginning. Wear protective gloves and appropriate protective clothing and equipment while decontaminating and disinfecting."
       }
     },
-    "image": ["/PPE Images/cbersnh-only/Proper-Washing-Decontamination-and Disinfection-Page-23.png"],
+    "images": ["/PPE Images/cbersnh-only/Proper-Washing-Decontamination-and Disinfection-Page-23.png"],
     "video": []
   },
   {
@@ -75,7 +75,7 @@
       "non_protection_list": "• ALL firefighting operations\n• ALL direct contact with flames or molten metal\n• ALL electrical hazards\n• ALL radiological agents\n• ALL liquefied gas and cryogenic liquid hazards\n• ALL explosive atmospheres",
       "aging_warning": "Protective properties will diminish as the product is worn and ages. To reduce the risk of injuries, you MUST follow the recommendations in this Guide for inspection and retirement of your Garment to ensure that the Garment is not used past its Useful Life."
     },
-    "image": ["/PPE Images/cbersnh-only/Purpose -and-Limitations-of-this-Garment-Page-8.png"],
+    "images": ["/PPE Images/cbersnh-only/Purpose -and-Limitations-of-this-Garment-Page-8.png"],
     "video": []
   },
 
@@ -105,7 +105,7 @@
       },
       "hazardous_situation": "If the situation is hazardous or may become hazardous, the use of SCBA and approved facepiece is required. Helmets must include secondary eye and face protection as an installed permanent part of the protective ensemble.\nShould you decide to eliminate the approved faceshield, an NFPA 1971 compliant mounted goggle must be installed."
     },
-    "image": ["/PPE Images/Fiberglass-RTM-1971-Helmet-User-Guide/Helmet Construction, Features and Function-Page 11.png"],
+    "images": ["/PPE Images/Fiberglass-RTM-1971-Helmet-User-Guide/Helmet Construction, Features and Function-Page 11.png"],
     "video": []
   },
 
@@ -172,7 +172,7 @@
         ]
       }
     },
-    "image": ["/PPE Images/Fiberglass-RTM-1971-Helmet-User-Guide/Proper Donning, Doffing, Fit and Adjustment-Page 13-14.png"],
+    "images": ["/PPE Images/Fiberglass-RTM-1971-Helmet-User-Guide/Proper Donning, Doffing, Fit and Adjustment-Page 13-14.png"],
     "video": []
   },
 
@@ -1415,7 +1415,7 @@
 
   {
     "id": 41,
-    "title": "WASHING, DECONTAMINATION AND STORAGE of Hood and Any PPE",
+    "title": "WASHING, DECONTAMINATION AND STORAGE of Hood",
     "sections": {
       "8.1 HAZARDS OF DIRTY PPE: WHY WASHING AND DECONTAMINATING IS IMPORTANT": {
         "content": "You can be exposed to many hazardous substances on the job. These substances can contaminate your Hood, and cause harm to you after your body contacts your Hood. This section tells you how to wash and decontaminate your Hood to reduce these hazards.\n\nRoutine Fireground Contaminants: Many fire combustion products —including hydrocarbons, polynuclear aromatic compounds, metals such as cadmium and chromium, acids and soot — are hazardous to the firefighter. These substances can become embedded in the materials of your Hood, penetrate inner layers, and enter the body through ingestion, absorption, inhalation, and parenteral contact. In addition, particulates and other products of combustion can reduce the flame resistance of your Hood and increase your ability to conduct electricity. To reduce the risk of long-term harm from hazardous substances present in the products of fire combustion, or hazardous chemicals, you MUST wash your Hood.\n\nHazardous Chemicals: If you experience accidental or incidental exposure to a hazardous chemical, follow all precautions in this Section to limit exposure and risk of harm to yourself and others. You should hose down the contaminated Hood at the scene to limit further exposure to hazardous chemicals, to reduce exposure to others, and to reduce the likelihood of chemicals from settling into your Hood.\n\nWARNING: Decontamination of protective clothing and equipment is a complicated process for which there is no guarantee that protective elements are free from contamination. While the purpose of decontamination is to remove all contaminant(s) from the element, decontamination procedures or cleaning processes are not always 100% effective in removing all contamination. See NFPA 1851.\n\nBloodborne Pathogens: Your Hood may be exposed to body fluids that may contain bloodborne pathogens. The washing procedures described later in this section will reduce your risk of infection from these hazards."
@@ -1460,9 +1460,7 @@
         "content": "Preparation: Make sure the Hood is clean and dry before storage.\nA. Store the Hood in a clean, dry, dust-free environment to avoid recontamination.\nB. Do not store your Hood in a vehicle or in any area that may experience excessive heat or humidity.\n\nNOTE: Hoods should be stored in a protective cover, if possible, to avoid dust contamination."
       }
     },
-    "images": [
-      "/PPE Images/LIJA4354-Protective-Particulate-Hood-UG_3-18-24/Washing, Decontamination and Disinfection-Page 21.png"
-    ],
+    "images": ["/PPE Images/LIJA4354-Protective-Particulate-Hood-UG_3-18-24/Washing, Decontamination and Disinfection-Page 21.png"],
     "videos": []
   }
 
